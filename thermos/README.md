@@ -2,11 +2,17 @@
 
 Thermo-nuclear branch review: deep correctness and security audits, harsh maintainability rubrics, and parallel subagent orchestration.
 
-## Installation
+## Install
 
-```bash
-/plugin install thermos
-```
+From the [repository root](../README.md#quick-install-all-plugins):
+
+| OS | Claude Code | OpenCode |
+|----|-------------|----------|
+| Windows (PowerShell) | `pwsh -File ./scripts/install-claude.ps1 -Plugin thermos` | `pwsh -File ./scripts/install-opencode.ps1 -Plugin thermos` |
+| Windows (Git Bash) | `bash ./scripts/install-claude.sh --plugin thermos` | `bash ./scripts/install-opencode.sh --plugin thermos` |
+| macOS / Linux | `bash ./scripts/install-claude.sh --plugin thermos` | `bash ./scripts/install-opencode.sh --plugin thermos` |
+
+Restart your agent host after installing.
 
 ## Architecture
 
@@ -61,18 +67,15 @@ flowchart TB
 
 **Single skill:** invoke `thermo-nuclear-review` or `thermo-nuclear-code-quality-review` in the main agent, or the matching subagent after gathering diff context.
 
-## Using this plugin with OpenCode
+### Host agents
 
-OpenCode discovers skills and agents from its own configuration directories. From the repository root, install Thermos globally:
+| Host | Agents |
+|------|--------|
+| Claude Code (Task subagents) | `thermo-nuclear-review-subagent`, `thermo-nuclear-code-quality-review-subagent` |
+| OpenCode (@mention) | same names |
 
-```powershell
-pwsh -File ./scripts/install-opencode.ps1 -Plugin thermos
-```
-
-Add `-Scope Project` to install into `.opencode/` in the current project. The installer copies skills into OpenCode's native `skills/` directory and both review agents into `agents/`. Quit and restart OpenCode after installing.
-
-`skills/*/SKILL.md` files use the shared [Agent Skills](https://agentskills.io) open standard and work unmodified. The `opencode/agent/` directory ships OpenCode-native versions of both subagents. Mention them directly with `@thermo-nuclear-review-subagent` or `@thermo-nuclear-code-quality-review-subagent` after gathering a diff.
+Gather diff context first, then invoke both review subagents in parallel for a full thermos pass.
 
 ## License
 
-MIT
+MIT. Derived from [cursor/plugins](https://github.com/cursor/plugins) — Copyright (c) 2026 Cursor.

@@ -2,11 +2,19 @@
 
 Internal-style workflows for CI, code review, shipping, and test reliability. The kit is designed to be plug and play without requiring third-party service integrations.
 
-## Installation
+## Install
 
-```bash
-/plugin install cursor-team-kit
-```
+From the [repository root](../README.md#quick-install-all-plugins):
+
+| OS | Claude Code | OpenCode |
+|----|-------------|----------|
+| Windows (PowerShell) | `pwsh -File ./scripts/install-claude.ps1 -Plugin cursor-team-kit` | `pwsh -File ./scripts/install-opencode.ps1 -Plugin cursor-team-kit` |
+| Windows (Git Bash) | `bash ./scripts/install-claude.sh --plugin cursor-team-kit` | `bash ./scripts/install-opencode.sh --plugin cursor-team-kit` |
+| macOS / Linux | `bash ./scripts/install-claude.sh --plugin cursor-team-kit` | `bash ./scripts/install-opencode.sh --plugin cursor-team-kit` |
+
+Project-local OpenCode install: add `-Scope Project` (PowerShell) or `--scope project` (Bash).
+
+Restart your agent host after installing.
 
 ## Components
 
@@ -40,18 +48,10 @@ Internal-style workflows for CI, code review, shipping, and test reliability. Th
 
 For the strict maintainability review previously shipped here as `thermo-nuclear-code-quality-review`, install the [`thermos`](../thermos/) plugin instead — it now owns that skill and agent.
 
-## Using this plugin with OpenCode
+### OpenCode
 
-OpenCode discovers skills and agents from its own configuration directories. From the repository root, install Cursor Team Kit globally:
-
-```powershell
-pwsh -File ./scripts/install-opencode.ps1 -Plugin cursor-team-kit
-```
-
-Add `-Scope Project` to install into `.opencode/` in the current project. The installer copies skills into OpenCode's native `skills/` directory and the `ci-watcher` agent into `agents/`. Quit and restart OpenCode after installing.
-
-`skills/*/SKILL.md` files use the shared [Agent Skills](https://agentskills.io) open standard and work unmodified. The `opencode/agent/` directory in this plugin ships an OpenCode-native version of `ci-watcher`.
+Mention `@ci-watcher` after install.
 
 ## License
 
-MIT
+MIT. Derived from [cursor/plugins](https://github.com/cursor/plugins) — Copyright (c) 2026 Cursor.

@@ -1,6 +1,7 @@
 [CmdletBinding()]
 param()
 
+# Expected OpenCode agents per plugin (pstack omits legacy poteto-agent).
 Set-StrictMode -Version Latest
 $ErrorActionPreference = 'Stop'
 

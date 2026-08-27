@@ -14,14 +14,19 @@ fork it. improve it. make it yours. PRs are welcome!
 
 ## install
 
-**Claude Code:**
+From the [repository root](../README.md#quick-install-all-plugins):
 
-```bash
-claude plugin marketplace add <your-github-user>/<this-repo>
-/plugin install pstack
-```
+| OS | Claude Code | OpenCode |
+|----|-------------|----------|
+| Windows (PowerShell) | `pwsh -File ./scripts/install-claude.ps1 -Plugin pstack` | `pwsh -File ./scripts/install-opencode.ps1 -Plugin pstack` |
+| Windows (Git Bash) | `bash ./scripts/install-claude.sh --plugin pstack` | `bash ./scripts/install-opencode.sh --plugin pstack` |
+| macOS / Linux | `bash ./scripts/install-claude.sh --plugin pstack` | `bash ./scripts/install-opencode.sh --plugin pstack` |
 
-**OpenCode:** from the repository root, run `pwsh -File ./scripts/install-opencode.ps1 -Plugin pstack`. Add `-Scope Project` to install into the current project's `.opencode` directory. See [Using this plugin with OpenCode](#using-this-plugin-with-opencode).
+Install `cursor-team-kit` alongside pstack for `/deslop`, `control-cli`, and `control-ui`.
+
+For a guided walkthrough after install, see [docs/guide/](docs/guide/README.md).
+
+Restart your agent host after installing.
 
 ## get started
 
@@ -189,21 +194,29 @@ automate-me:       /automate-me
 
 ## agents
 
-OpenCode installs three primary pstack agents. Switch among them with **Tab**.
+### OpenCode (primary — Tab to switch)
 
-| Agent | Use it for |
-|---|---|
-| `coding-agent` | Default coding agent (Cursor Agent-mode behavior). Implement, debug, refactor, run commands, delegate to subagents. |
-| `poteto-mode` | Rigorous multi-step work that always follows Poteto Mode and pstack principles. |
-| `review-agent` | Read-only review of a diff, pull request, or implementation. Cannot edit files. |
+| Agent | Use for |
+|-------|---------|
+| `coding-agent` | Default coding. Implement, debug, refactor, run commands, delegate to subagents. |
+| `poteto-mode` | Rigorous multi-step Poteto Mode with principles and playbooks. |
+| `review-agent` | Read-only review. Cannot edit files. |
 
-Pstack also includes one subagent for OpenCode:
+Subagents: `@comment-sicko`, `@ci-watcher` (from cursor-team-kit), thermo review subagents (from thermos).
 
-pstack also ships a subagent that runs my style end to end. spawn it from a parent agent via [`subagent_type: "poteto-agent"`](./agents/poteto-agent.md) in Cursor. In OpenCode, select **`poteto-mode`** as a primary agent (Tab) or invoke **`@comment-sicko`** for comment review. The Cursor `poteto-agent` subagent reads `poteto-mode` in full before doing any work. substituting `generalPurpose` skips that read and drifts.
+Set `default_agent` to `coding-agent` in `~/.config/opencode/opencode.json` for Cursor Agent-style defaults.
 
-[`/poteto-mode`](./skills/poteto-mode/SKILL.md) and [`subagent_type: "poteto-agent"`](./agents/poteto-agent.md) route through the same wrapper.
+### Claude Code (Task subagents)
 
-pstack also ships [Comment Sicko](./agents/comment-sicko.md), a read-only comment reviewer available as `subagent_type: "Comment Sicko"`. usually invoke it through [`/no-comments`](./skills/no-comments/SKILL.md), not directly.
+| Subagent | Use for |
+|----------|---------|
+| `coding-agent` | Default coding delegate |
+| `poteto-mode` | Full Poteto Mode workflow |
+| `review-agent` | Read-only review |
+| `poteto-agent` | Legacy alias for `poteto-mode` |
+| `comment-sicko` | Comment cleanup (`Comment Sicko`) |
+
+[`/poteto-mode`](./skills/poteto-mode/SKILL.md) and [`subagent_type: "poteto-mode"`](./agents/poteto-mode.md) route through the same wrapper. Invoke Comment Sicko through [`/no-comments`](./skills/no-comments/SKILL.md), not directly.
 
 ## principles
 
@@ -259,18 +272,15 @@ type [`/automate-me`](./skills/automate-me/SKILL.md). it mines your recent trans
 
 models are configurable too. type [`/setup-pstack`](./skills/setup-pstack/SKILL.md). it detects the models you have access to and writes a small config file (`~/.pstack/models.conf`) mapping each role (code, judgment, the review panels) to a model. every skill reads it and falls back to sensible defaults when the config is absent, so you override only what you want.
 
-## using this plugin with OpenCode
+## session history skills
 
-OpenCode discovers skills and agents from its own configuration directories. From the repository root, install pstack globally:
+A handful of skills (`recall`, `reflect`, `automate-me`, `show-me-your-work`, and some `poteto-mode` playbooks) read on-disk session history when the host exposes it:
 
-```powershell
-pwsh -File ./scripts/install-opencode.ps1 -Plugin pstack
-```
+- Claude Code: `~/.claude/projects/<slug>/*.jsonl`
+- OpenCode: `opencode session list` and `opencode export`
 
-Add `-Scope Project` to install into `.opencode/` in the current project. The installer copies skills into OpenCode's native `skills/` directory and pstack agents (`coding-agent`, `review-agent`, `poteto-mode`, `comment-sicko`) into `agents/`. Quit and restart OpenCode after installing.
-
-`skills/*/SKILL.md` files use the shared [Agent Skills](https://agentskills.io) open standard and work unmodified. The `opencode/agent/` directory ships OpenCode-native primary agents and subagents. A handful of skills (`recall`, `reflect`, `automate-me`, `show-me-your-work`, and the `poteto-mode` playbooks that reference session transcripts) mine on-disk session history when the host exposes it: Claude Code's `~/.claude/projects/<slug>/*.jsonl` files, or OpenCode's `opencode session list` and `opencode export`. They ask for context when neither source is available.
+They ask for context when neither source is available.
 
 ## license
 
-MIT
+MIT. From [cursor/plugins](https://github.com/cursor/plugins) — Copyright (c) 2026 Lauren Tan.
