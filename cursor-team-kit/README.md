@@ -42,20 +42,15 @@ For the strict maintainability review previously shipped here as `thermo-nuclear
 
 ## Using this plugin with OpenCode
 
-OpenCode has no plugin-install mechanism for skill/agent bundles — copy the files you want into OpenCode's own directories:
+OpenCode discovers skills and agents from its own configuration directories. From the repository root, install Cursor Team Kit globally:
 
-```bash
-# skills (project-local)
-cp -r skills/* .opencode/skills/
-
-# skills (global, all projects)
-cp -r skills/* ~/.config/opencode/skills/
-
-# the ci-watcher agent
-cp opencode/agent/ci-watcher.md .opencode/agent/
+```powershell
+pwsh -File ./scripts/install-opencode.ps1 -Plugin cursor-team-kit
 ```
 
-`skills/*/SKILL.md` files use the shared [Agent Skills](https://agentskills.io) open standard and work unmodified. The `opencode/agent/` directory in this plugin ships an OpenCode-native version of `ci-watcher` (frontmatter translated from Claude Code's `agents/` format — `mode: subagent` instead of `is_background`/`model: fast`).
+Add `-Scope Project` to install into `.opencode/` in the current project. The installer copies skills into OpenCode's native `skills/` directory and the `ci-watcher` agent into `agents/`. Quit and restart OpenCode after installing.
+
+`skills/*/SKILL.md` files use the shared [Agent Skills](https://agentskills.io) open standard and work unmodified. The `opencode/agent/` directory in this plugin ships an OpenCode-native version of `ci-watcher`.
 
 ## License
 

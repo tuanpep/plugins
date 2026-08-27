@@ -21,7 +21,7 @@ claude plugin marketplace add <your-github-user>/<this-repo>
 /plugin install pstack
 ```
 
-**OpenCode:** copy `skills/` into `.opencode/skills/` (or `~/.config/opencode/skills/` for a global install), and copy `opencode/agent/*.md` into `.opencode/agent/` if you want the `comment-sicko` and `poteto-agent` subagents too. See [Using this plugin with OpenCode](#using-this-plugin-with-opencode).
+**OpenCode:** from the repository root, run `pwsh -File ./scripts/install-opencode.ps1 -Plugin pstack`. Add `-Scope Project` to install into the current project's `.opencode` directory. See [Using this plugin with OpenCode](#using-this-plugin-with-opencode).
 
 ## get started
 
@@ -187,9 +187,19 @@ automate-me:       /automate-me
 
 </details>
 
-## the `poteto-agent` and Comment Sicko subagents
+## agents
 
-pstack also ships a subagent that runs my style end to end. spawn it from a parent agent via [`subagent_type: "poteto-agent"`](./agents/poteto-agent.md). it reads `poteto-mode` in full, including its inline principles index, before doing any work. substituting `generalPurpose` skips that read and drifts.
+OpenCode installs three primary pstack agents. Switch among them with **Tab**.
+
+| Agent | Use it for |
+|---|---|
+| `coding-agent` | Default coding agent (Cursor Agent-mode behavior). Implement, debug, refactor, run commands, delegate to subagents. |
+| `poteto-mode` | Rigorous multi-step work that always follows Poteto Mode and pstack principles. |
+| `review-agent` | Read-only review of a diff, pull request, or implementation. Cannot edit files. |
+
+Pstack also includes one subagent for OpenCode:
+
+pstack also ships a subagent that runs my style end to end. spawn it from a parent agent via [`subagent_type: "poteto-agent"`](./agents/poteto-agent.md) in Cursor. In OpenCode, select **`poteto-mode`** as a primary agent (Tab) or invoke **`@comment-sicko`** for comment review. The Cursor `poteto-agent` subagent reads `poteto-mode` in full before doing any work. substituting `generalPurpose` skips that read and drifts.
 
 [`/poteto-mode`](./skills/poteto-mode/SKILL.md) and [`subagent_type: "poteto-agent"`](./agents/poteto-agent.md) route through the same wrapper.
 
@@ -251,20 +261,15 @@ models are configurable too. type [`/setup-pstack`](./skills/setup-pstack/SKILL.
 
 ## using this plugin with OpenCode
 
-OpenCode has no plugin-install mechanism for skill/agent bundles — copy the files you want into OpenCode's own directories:
+OpenCode discovers skills and agents from its own configuration directories. From the repository root, install pstack globally:
 
-```bash
-# skills (project-local)
-cp -r skills/* .opencode/skills/
-
-# skills (global, all projects)
-cp -r skills/* ~/.config/opencode/skills/
-
-# the comment-sicko and poteto-agent subagents
-cp opencode/agent/*.md .opencode/agent/
+```powershell
+pwsh -File ./scripts/install-opencode.ps1 -Plugin pstack
 ```
 
-`skills/*/SKILL.md` files use the shared [Agent Skills](https://agentskills.io) open standard and work unmodified. The `opencode/agent/` directory ships OpenCode-native versions of both agents. A handful of skills (`recall`, `reflect`, `automate-me`, `show-me-your-work`, and the `poteto-mode` playbooks that reference session transcripts) mine on-disk session history when the host exposes it — Claude Code's `~/.claude/projects/<slug>/*.jsonl` files, or OpenCode's `opencode session list` / `opencode export` — and fall back to asking you directly for context when neither is available.
+Add `-Scope Project` to install into `.opencode/` in the current project. The installer copies skills into OpenCode's native `skills/` directory and pstack agents (`coding-agent`, `review-agent`, `poteto-mode`, `comment-sicko`) into `agents/`. Quit and restart OpenCode after installing.
+
+`skills/*/SKILL.md` files use the shared [Agent Skills](https://agentskills.io) open standard and work unmodified. The `opencode/agent/` directory ships OpenCode-native primary agents and subagents. A handful of skills (`recall`, `reflect`, `automate-me`, `show-me-your-work`, and the `poteto-mode` playbooks that reference session transcripts) mine on-disk session history when the host exposes it: Claude Code's `~/.claude/projects/<slug>/*.jsonl` files, or OpenCode's `opencode session list` and `opencode export`. They ask for context when neither source is available.
 
 ## license
 

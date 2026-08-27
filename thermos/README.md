@@ -63,20 +63,15 @@ flowchart TB
 
 ## Using this plugin with OpenCode
 
-OpenCode has no plugin-install mechanism for skill/agent bundles — copy the files you want into OpenCode's own directories:
+OpenCode discovers skills and agents from its own configuration directories. From the repository root, install Thermos globally:
 
-```bash
-# skills (project-local)
-cp -r skills/* .opencode/skills/
-
-# skills (global, all projects)
-cp -r skills/* ~/.config/opencode/skills/
-
-# both review subagents
-cp opencode/agent/*.md .opencode/agent/
+```powershell
+pwsh -File ./scripts/install-opencode.ps1 -Plugin thermos
 ```
 
-`skills/*/SKILL.md` files use the shared [Agent Skills](https://agentskills.io) open standard and work unmodified. The `opencode/agent/` directory ships OpenCode-native versions of both subagents — mention them directly with `@thermo-nuclear-review-subagent` or `@thermo-nuclear-code-quality-review-subagent` after gathering a diff, since OpenCode has no `Task`-tool equivalent for a parent skill to spawn them automatically in parallel.
+Add `-Scope Project` to install into `.opencode/` in the current project. The installer copies skills into OpenCode's native `skills/` directory and both review agents into `agents/`. Quit and restart OpenCode after installing.
+
+`skills/*/SKILL.md` files use the shared [Agent Skills](https://agentskills.io) open standard and work unmodified. The `opencode/agent/` directory ships OpenCode-native versions of both subagents. Mention them directly with `@thermo-nuclear-review-subagent` or `@thermo-nuclear-code-quality-review-subagent` after gathering a diff.
 
 ## License
 

@@ -27,22 +27,27 @@ Or test a plugin locally without installing:
 claude --plugin-dir ./pstack
 ```
 
-## Installing in OpenCode
+## Install in OpenCode
 
-OpenCode has no marketplace/plugin-install concept for skill bundles — it reads `SKILL.md` files directly from known directories. Copy or symlink the skill folders you want into one of:
+OpenCode discovers skills from `~/.config/opencode/skills/` and agents from `~/.config/opencode/agents/`. Use the installer from the repository root:
 
-```
-.opencode/skills/<name>/       # project-local
-~/.config/opencode/skills/<name>/   # global
-```
+```powershell
+# Install every plugin for every project.
+pwsh -File ./scripts/install-opencode.ps1
 
-For example, to pull in every skill from `pstack`:
-
-```bash
-cp -r pstack/skills/* .opencode/skills/
+# Install one plugin in the current project's .opencode directory.
+pwsh -File ./scripts/install-opencode.ps1 -Plugin pstack -Scope Project
 ```
 
-Each `SKILL.md` follows the shared [Agent Skills](https://agentskills.io) open standard (`name` + `description` frontmatter), so skill bodies work unmodified in both tools. `agents/` (subagents) and `hooks/` are Claude Code-specific and are not loaded by OpenCode.
+The installer is safe to rerun. It updates only the selected plugins' `skills/` and OpenCode-native `agents/` files. It does not edit `opencode.json` because OpenCode loads these directories automatically. Quit and restart OpenCode after installing.
+
+To copy files yourself, copy each plugin's `skills/*` folders to `.opencode/skills/` or `~/.config/opencode/skills/`. Copy `opencode/agent/*.md` to `.opencode/agents/` when the plugin includes agents. OpenCode also supports singular directory names for older configurations, but its current documentation uses plural names.
+
+Run the repository check after changing a plugin:
+
+```powershell
+pwsh -File ./scripts/verify-opencode.ps1
+```
 
 ## Repository structure
 
