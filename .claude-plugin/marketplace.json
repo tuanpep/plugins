@@ -1,0 +1,27 @@
+{
+  "name": "agent-plugins",
+  "owner": {
+    "name": "agent-plugins",
+    "email": "info@agent-plugins.com"
+  },
+  "metadata": {
+    "description": "Plugin marketplace for Claude Code and OpenCode: developer team workflows, deep code review, and rigorous engineering skills."
+  },
+  "plugins": [
+    {
+      "name": "cursor-team-kit",
+      "source": "./cursor-team-kit",
+      "description": "Internal team workflows for CI, code review, shipping, local automation, and verification."
+    },
+    {
+      "name": "thermos",
+      "source": "./thermos",
+      "description": "Thermo-nuclear branch review: deep security/correctness audits, harsh code-quality rubrics, parallel subagents, thermos orchestration, and optional merge-ready PR flows."
+    },
+    {
+      "name": "pstack",
+      "source": "./pstack",
+      "description": "if you want to go fast, go deep first. pstack helps you write less, but higher quality code. rigorous agent workflows you can parallelize with confidence."
+    }
+  ]
+}
