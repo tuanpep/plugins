@@ -1,0 +1,84 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "default_agent": "code",
+  "permission": "allow",
+  "instructions": ["WORKFLOW.md"],
+  "agent": {
+    "build": {
+      "disable": true
+    },
+    "plan": {
+      "disable": true
+    },
+    "ci-watcher": {
+      "mode": "subagent"
+    },
+    "comment-sicko": {
+      "mode": "subagent"
+    },
+    "thermo-nuclear-review-subagent": {
+      "mode": "subagent"
+    },
+    "thermo-nuclear-code-quality-review-subagent": {
+      "mode": "subagent"
+    },
+    "code": {
+      "mode": "primary",
+      "description": "Light everyday coding. Implement, debug, and refactor small changes."
+    },
+    "review": {
+      "mode": "primary",
+      "description": "Read-only review for bugs, security, and maintainability."
+    },
+    "rigor": {
+      "mode": "primary",
+      "description": "Heavy engineering with pstack playbooks and verification."
+    },
+    "poteto-mode": {
+      "mode": "subagent",
+      "hidden": true,
+      "description": "Hidden pstack Task target. Same style as rigor."
+    },
+    "poteto-agent": {
+      "mode": "subagent",
+      "hidden": true,
+      "description": "Hidden pstack Task target. Same style as rigor."
+    },
+    "poteto-research": {
+      "mode": "subagent",
+      "hidden": true,
+      "description": "Hidden pstack target for bounded read-only investigation, inventory, and evidence gathering."
+    },
+    "poteto-worker": {
+      "mode": "subagent",
+      "hidden": true,
+      "description": "Hidden pstack target for normal implementation, refactoring, tests, and focused review."
+    },
+    "poteto-expert": {
+      "mode": "subagent",
+      "hidden": true,
+      "description": "Hidden pstack target for trace-backed performance work and high-risk or unusually difficult reasoning."
+    },
+    "compatibility-scan-review": {
+      "mode": "subagent",
+      "description": "Run the agent-compatibility CLI and return the raw score."
+    },
+    "startup-review": {
+      "mode": "subagent",
+      "description": "Cold-start the repo like an agent and score friction."
+    },
+    "validation-review": {
+      "mode": "subagent",
+      "description": "Score whether a small change has a practical verify loop."
+    },
+    "docs-reliability-review": {
+      "mode": "subagent",
+      "description": "Score whether AGENTS.md and README match the real path."
+    },
+    "agents-memory-updater": {
+      "mode": "subagent",
+      "hidden": true,
+      "description": "Hidden /learn target. Mines OpenCode sessions into AGENTS.md."
+    }
+  }
+}

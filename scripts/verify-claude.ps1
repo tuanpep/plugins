@@ -10,6 +10,7 @@ $plugins = @{
     'cursor-team-kit' = @('ci-watcher')
     'pstack' = @('coding-agent', 'review-agent', 'poteto-mode', 'poteto-agent', 'comment-sicko')
     'thermos' = @('thermo-nuclear-code-quality-review-subagent', 'thermo-nuclear-review-subagent')
+    'opencode-workflow' = @()
 }
 $errors = [System.Collections.Generic.List[string]]::new()
 
@@ -70,6 +71,9 @@ foreach ($plugin in $plugins.Keys) {
     }
 
     if (-not (Test-Path -LiteralPath $agentsRoot -PathType Container)) {
+        if ($plugins[$plugin].Count -eq 0) {
+            continue
+        }
         $errors.Add("$plugin is missing agents/")
         continue
     }

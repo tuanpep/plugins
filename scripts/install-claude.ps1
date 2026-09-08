@@ -7,8 +7,8 @@ pwsh -File ./scripts/install-claude.ps1
 #>
 [CmdletBinding(SupportsShouldProcess)]
 param(
-    [ValidateSet('cursor-team-kit', 'pstack', 'thermos')]
-    [string[]] $Plugin = @('cursor-team-kit', 'pstack', 'thermos'),
+    [ValidateSet('cursor-team-kit', 'pstack', 'thermos', 'opencode-workflow')]
+    [string[]] $Plugin = @('cursor-team-kit', 'pstack', 'thermos', 'opencode-workflow'),
 
     [string] $Marketplace = 'agent-plugins',
 

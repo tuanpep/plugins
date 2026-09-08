@@ -37,7 +37,7 @@ two steps:
 
 new here? the [pstack guide](./docs/guide/README.md) walks you through a first real task, from setup and prompting through verification and overnight runs.
 
-that's it. the other skills are situational; the mode skill uses them for you as needed. out of the box the mode splits work by model strength: precisely-specified code goes to sol, fast mechanical code goes to grok, and prose and judgment go to fable. the default panel is fable / sol / grok / opus 5. [`/setup-pstack`](./skills/setup-pstack/SKILL.md) changes any of it.
+that's it. the other skills are situational; the mode skill uses them for you as needed. in the bundled OpenCode workflow, `poteto-research` handles bounded evidence gathering, `poteto-worker` handles normal implementation, and `poteto-expert` is reserved for trace-backed performance and high-risk reasoning. Run [`/setup-pstack`](./skills/setup-pstack/SKILL.md) after install to map those roles to models you can use.
 
 ## usage
 
@@ -194,17 +194,20 @@ automate-me:       /automate-me
 
 ## agents
 
-### OpenCode (primary — Tab to switch)
+### OpenCode (this plugin's agents)
+
+Tab primaries `code` / `review` / `rigor` ship in [`opencode-workflow`](../opencode-workflow/). This plugin installs hidden Task targets plus Comment Sicko:
 
 | Agent | Use for |
 |-------|---------|
-| `coding-agent` | Default coding. Implement, debug, refactor, run commands, delegate to subagents. |
-| `poteto-mode` | Rigorous multi-step Poteto Mode with principles and playbooks. |
-| `review-agent` | Read-only review. Cannot edit files. |
+| `poteto-research` | Hidden target for bounded evidence gathering. |
+| `poteto-worker` | Hidden target for normal implementation and focused review. |
+| `poteto-expert` | Hidden target for trace-backed performance and high-risk reasoning. |
+| `poteto-mode` | Hidden compatibility target. |
+| `poteto-agent` | Hidden compatibility target. |
+| `comment-sicko` | Comment-only review. |
 
-Subagents: `@comment-sicko`, `@ci-watcher` (from cursor-team-kit), thermo review subagents (from thermos).
-
-Set `default_agent` to `coding-agent` in `~/.config/opencode/opencode.json` for Cursor Agent-style defaults.
+Set `default_agent` to `code` via `opencode-workflow`'s `opencode.json.template`.
 
 ### Claude Code (Task subagents)
 

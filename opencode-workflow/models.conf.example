@@ -1,0 +1,28 @@
+# Configure this file after installation with /setup-pstack.
+#
+# The installer copies this placeholder to ~/.pstack/models.conf only when no
+# file exists. It deliberately contains no provider or model slugs. Do not add
+# a line until /setup-pstack has confirmed the model is available to the user.
+#
+# One role per line:
+# feature, refactoring: <best-price-performance-coding-model>
+# bug-fix: <best-price-performance-coding-model>
+# perf-issue: <strongest-reasoning-model>
+# hillclimb: <best-price-performance-coding-model>
+# judgment and prose: <best-price-performance-coding-model>
+# hardest tasks: <strongest-reasoning-model>
+# how explorer: <low-cost-research-model>
+# how explainer: <best-price-performance-coding-model>
+# how critics: <model-a>, <model-b>
+# why investigators: <low-cost-research-model>
+# why synthesizer: <best-price-performance-coding-model>
+# reflect tooling: <low-cost-research-model>
+# reflect judgment, divergent, synthesizer: <best-price-performance-coding-model>
+# arena runners: <model-a>, <model-b>, <model-c>
+# arena cross-judge pool: <model-a>, <model-b>
+# swarm workers: <low-cost-research-model>
+# architect runners: <model-a>, <model-b>
+# interrogate reviewers: <model-a>, <model-b>
+#
+# `inherit-parent` or `auto` are also valid values. They run a role on the
+# parent chat model. Re-run /setup-pstack to write a valid complete mapping.

@@ -8,8 +8,18 @@ $ErrorActionPreference = 'Stop'
 $repositoryRoot = Split-Path -Parent $PSScriptRoot
 $plugins = @{
     'cursor-team-kit' = @('ci-watcher')
-    'pstack' = @('coding-agent', 'review-agent', 'poteto-mode', 'comment-sicko')
+    'pstack' = @('poteto-mode', 'poteto-agent', 'poteto-research', 'poteto-worker', 'poteto-expert', 'comment-sicko')
     'thermos' = @('thermo-nuclear-code-quality-review-subagent', 'thermo-nuclear-review-subagent')
+    'opencode-workflow' = @(
+        'code',
+        'review',
+        'rigor',
+        'compatibility-scan-review',
+        'startup-review',
+        'validation-review',
+        'docs-reliability-review',
+        'agents-memory-updater'
+    )
 }
 $errors = [System.Collections.Generic.List[string]]::new()
 
@@ -84,6 +94,30 @@ foreach ($plugin in $plugins.Keys) {
         }
     } elseif ($plugins[$plugin].Count -gt 0) {
         $errors.Add("$plugin is missing opencode/agent/")
+    }
+
+    $commandsRoot = Join-Path $pluginRoot 'opencode/command'
+    if (Test-Path -LiteralPath $commandsRoot -PathType Container) {
+        foreach ($commandFile in Get-ChildItem -LiteralPath $commandsRoot -Filter *.md -File) {
+            $frontmatter = Get-Frontmatter -Path $commandFile.FullName
+            if ([string]::IsNullOrWhiteSpace($frontmatter['description'])) {
+                $errors.Add("$($commandFile.FullName) has no OpenCode command description")
+            }
+        }
+    }
+}
+
+$workflowRoot = Join-Path $repositoryRoot 'opencode-workflow'
+if (-not (Test-Path -LiteralPath (Join-Path $workflowRoot 'WORKFLOW.md') -PathType Leaf)) {
+    $errors.Add('opencode-workflow is missing WORKFLOW.md')
+}
+if (-not (Test-Path -LiteralPath (Join-Path $workflowRoot 'opencode.json.template') -PathType Leaf)) {
+    $errors.Add('opencode-workflow is missing opencode.json.template')
+} else {
+    try {
+        Get-Content -LiteralPath (Join-Path $workflowRoot 'opencode.json.template') -Raw | ConvertFrom-Json | Out-Null
+    } catch {
+        $errors.Add("opencode-workflow opencode.json.template is not valid JSON: $_")
     }
 }
 

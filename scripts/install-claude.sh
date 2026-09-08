@@ -15,7 +15,7 @@ usage() {
   cat <<'EOF'
 Usage: install-claude.sh [--plugin NAME]... [--marketplace NAME] [--marketplace-path PATH]
 
-Plugins (default: cursor-team-kit, pstack, thermos):
+Plugins (default: cursor-team-kit, pstack, thermos, opencode-workflow):
   --plugin NAME            install one plugin (repeatable)
 
 Options:
@@ -52,7 +52,7 @@ while [[ $# -gt 0 ]]; do
 done
 
 if [[ ${#plugins[@]} -eq 0 ]]; then
-  plugins=(cursor-team-kit pstack thermos)
+  plugins=(cursor-team-kit pstack thermos opencode-workflow)
 fi
 
 if ! command -v claude >/dev/null 2>&1; then
@@ -70,7 +70,7 @@ fi
 installed="$(claude plugin list 2>&1 || true)"
 for name in "${plugins[@]}"; do
   case "$name" in
-    cursor-team-kit|pstack|thermos) ;;
+    cursor-team-kit|pstack|thermos|opencode-workflow) ;;
     *)
       echo "Unknown plugin: $name" >&2
       exit 1

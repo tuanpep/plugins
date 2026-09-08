@@ -18,6 +18,7 @@ Skills use the shared [Agent Skills](https://agentskills.io) format and work in 
 | `cursor-team-kit` | [cursor-team-kit/](cursor-team-kit/) | CI, shipping, PR review, verification, CLI/UI harness skills |
 | `pstack` | [pstack/](pstack/) | Poteto Mode, principles, architect/interrogate/swarm workflows |
 | `thermos` | [thermos/](thermos/) | Thermo-nuclear branch review (security + code quality) |
+| `opencode-workflow` | [opencode-workflow/](opencode-workflow/) | OpenCode host config: `code` / `review` / `rigor`, slash commands, `WORKFLOW.md`, `/compat`, `/learn` |
 
 ---
 
@@ -124,13 +125,8 @@ bash ./scripts/install-opencode.sh --plugin pstack --scope project
    "cursor-team-kit@cursor-plugins-mirror": false,
    "pstack@cursor-plugins-mirror": false
    ```
-3. **OpenCode (optional):** set a default primary agent in `~/.config/opencode/opencode.json`:
-   ```json
-   {
-     "default_agent": "coding-agent"
-   }
-   ```
-4. **OpenCode:** the installer copies and merges files; it does not delete renamed/removed agents. After agent renames, remove stale `*.md` files from `~/.config/opencode/agents/` manually.
+3. **OpenCode:** `opencode-workflow` merges `opencode.json.template` into `~/.config/opencode/opencode.json`, installs `WORKFLOW.md`, and sets `default_agent` to `code`. It does not add a provider, API key, or model. Configure your provider through OpenCode. Copy the tier entries in `opencode-workflow/opencode-model-routing.example.jsonc` into `opencode.json` with model slugs available to you, then run `/setup-pstack` for routed-skill roles.
+4. **OpenCode:** the installer removes stale `coding-agent.md` / `review-agent.md` from the destination `agents/` directory. Primaries are now `code`, `review`, and `rigor`.
 
 ---
 
@@ -166,7 +162,7 @@ Run from the repository root after editing skills or agents.
 
 Bash verify scripts delegate to PowerShell 7 when available.
 
-Verification checks skill frontmatter, required agent files, and naming conventions. OpenCode expects four pstack agents (`coding-agent`, `review-agent`, `poteto-mode`, `comment-sicko`); Claude Code also includes legacy `poteto-agent`. Claude agent `comment-sicko` uses `name: Comment Sicko` (not kebab-case) by design.
+Verification checks skill frontmatter, required agent files, and naming conventions. OpenCode pstack agents use tiered hidden Task targets: `poteto-research` for evidence gathering, `poteto-worker` for implementation, and `poteto-expert` for high-risk work. Configure their actual models with `/setup-pstack` after installation. `poteto-mode`, `poteto-agent`, and `comment-sicko` remain available. Primaries `code` / `review` / `rigor` live in `opencode-workflow`. Claude Code still uses `coding-agent` / `review-agent` / `poteto-mode` / `poteto-agent` / `comment-sicko`. Claude agent `comment-sicko` uses `name: Comment Sicko` (not kebab-case) by design.
 
 ---
 
@@ -182,15 +178,15 @@ Verification checks skill frontmatter, required agent files, and naming conventi
 | `poteto-agent` | Legacy alias for `poteto-mode` |
 | `comment-sicko` | Comment cleanup (`Comment Sicko`) |
 
-### pstack (OpenCode — primary agents, Tab to switch)
+### OpenCode — Tab primaries (`opencode-workflow`)
 
 | Agent | Use for |
 |-------|---------|
-| `coding-agent` | Default coding (Cursor Agent-style) |
-| `poteto-mode` | Rigorous Poteto Mode |
-| `review-agent` | Read-only review |
+| `code` | Light implement/debug. Default. |
+| `review` | Read-only review. No file edits. |
+| `rigor` | Heavy pstack playbooks and verification. |
 
-OpenCode subagents: `@comment-sicko`, `@ci-watcher`, thermo review subagents.
+Hidden Task targets from pstack: `@poteto-research` for evidence gathering, `@poteto-worker` for implementation, and `@poteto-expert` for high-risk work. Run `/setup-pstack` after installation to map work types to available models. `@poteto-mode` and `@poteto-agent` remain compatibility targets. Other subagents: `@comment-sicko`, `@ci-watcher`, thermo review subagents. Commands: `/review`, `/rigor`, `/compat`, `/learn`, `/ship`, `/verify`, `/how`, `/why`.
 
 ### thermos + cursor-team-kit
 
@@ -233,13 +229,16 @@ Then restart Claude Code / OpenCode.
 ├── scripts/
 │   ├── install-claude.ps1 / .sh
 │   ├── install-opencode.ps1 / .sh
+│   ├── merge-opencode-json.py
 │   ├── verify-claude.ps1
 │   └── verify-opencode.ps1
 └── <plugin>/
     ├── .claude-plugin/plugin.json
     ├── skills/                       # shared skills (both hosts)
     ├── agents/                       # Claude Code subagents
-    └── opencode/agent/               # OpenCode agents
+    └── opencode/
+        ├── agent/                    # OpenCode agents
+        └── command/                  # OpenCode slash commands (optional)
 ```
 
 ---
@@ -250,7 +249,7 @@ Then restart Claude Code / OpenCode.
 |-----------|------------------|---------|
 | `cursor-team-kit`, `thermos` | [Cursor](https://cursor.com) | MIT — see plugin `LICENSE` |
 | `pstack` | Lauren Tan | MIT — see [pstack/LICENSE](pstack/LICENSE) |
-| Install scripts, Claude/OpenCode agent adaptations | tuanpep | MIT — see [LICENSE](LICENSE) |
+| Install scripts, Claude/OpenCode agent adaptations, `opencode-workflow` | tuanpep | MIT — see [LICENSE](LICENSE) |
 
 Upstream source: [github.com/cursor/plugins](https://github.com/cursor/plugins)
 

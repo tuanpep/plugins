@@ -22,6 +22,11 @@
       "name": "pstack",
       "source": "./pstack",
       "description": "if you want to go fast, go deep first. pstack helps you write less, but higher quality code. rigorous agent workflows you can parallelize with confidence."
+    },
+    {
+      "name": "opencode-workflow",
+      "source": "./opencode-workflow",
+      "description": "OpenCode host workflow: code/review/rigor primaries, slash commands, WORKFLOW.md, /compat, and /learn."
     }
   ]
 }

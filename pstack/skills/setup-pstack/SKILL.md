@@ -15,7 +15,7 @@ Enumerate the model slugs you can pass to a `Task` subagent in this session; tha
 
 ### 2. Load current state
 
-The default role-to-model mapping is the config shape shown in step 5 below. If `~/.pstack/models.conf` already exists, read it and treat its values as the current choices. Otherwise start from those defaults.
+If `~/.pstack/models.conf` already exists, read it and treat its values as the current choices. Otherwise start with no selections. Derive candidate choices from the models detected in step 1; never use a bundled provider-specific fallback.
 
 ### 3. Map and confirm
 
@@ -27,29 +27,29 @@ Every real slug written must be in the detected set; `inherit-parent` and `auto`
 
 ### 5. Write the config file
 
-Write `~/.pstack/models.conf` with one line per role, using the same labels poteto-mode uses. Overwrite the whole file so re-runs stay idempotent. Shape:
+Write `~/.pstack/models.conf` with one line per role, using the same labels poteto-mode uses. Overwrite the whole file so re-runs stay idempotent. Replace each placeholder below with a confirmed slug or `inherit-parent` / `auto`. This is a shape example, not a file to write literally:
 
 ```
-# pstack model configuration. One line per role. Delete a line to fall back to the skill default.
+# pstack model configuration. One line per role.
 # `inherit-parent` or `auto` as a value: the role runs on the parent chat model (omit Task `model`). Alias entries in a panel list still count toward its fan-out.
-feature, refactoring: grok-4.6-fast-xhigh
-bug-fix: gpt-5.6-sol-max
-perf-issue: gpt-5.6-sol-max
-hillclimb: gpt-5.6-sol-max
-judgment and prose: claude-fable-5-thinking-max
-hardest tasks: claude-fable-5-thinking-max
-how explorer: grok-4.6-fast-xhigh
-how explainer: claude-fable-5-thinking-max
-how critics: claude-fable-5-thinking-max, gpt-5.6-sol-max, grok-4.6-fast-xhigh, claude-opus-5-thinking-xhigh
-why investigators: grok-4.6-fast-xhigh
-why synthesizer: claude-fable-5-thinking-max
-reflect tooling: gpt-5.6-sol-max
-reflect judgment, divergent, synthesizer: claude-fable-5-thinking-max
-arena runners: claude-fable-5-thinking-max, gpt-5.6-sol-max, grok-4.6-fast-xhigh, claude-opus-5-thinking-xhigh
-arena cross-judge pool: claude-fable-5-thinking-max, gpt-5.6-sol-max, grok-4.6-fast-xhigh, claude-opus-5-thinking-xhigh
-swarm workers: grok-4.6-fast-xhigh
-architect runners: claude-fable-5-thinking-max, gpt-5.6-sol-max, grok-4.6-fast-xhigh, claude-opus-5-thinking-xhigh
-interrogate reviewers: claude-fable-5-thinking-max, gpt-5.6-sol-max, grok-4.6-fast-xhigh, claude-opus-5-thinking-xhigh
+feature, refactoring: <best-price-performance-coding-model>
+bug-fix: <best-price-performance-coding-model>
+perf-issue: <strongest-reasoning-model>
+hillclimb: <best-price-performance-coding-model>
+judgment and prose: <best-price-performance-coding-model>
+hardest tasks: <strongest-reasoning-model>
+how explorer: <low-cost-research-model>
+how explainer: <best-price-performance-coding-model>
+how critics: <model-a>, <model-b>
+why investigators: <low-cost-research-model>
+why synthesizer: <best-price-performance-coding-model>
+reflect tooling: <low-cost-research-model>
+reflect judgment, divergent, synthesizer: <best-price-performance-coding-model>
+arena runners: <model-a>, <model-b>, <model-c>
+arena cross-judge pool: <model-a>, <model-b>
+swarm workers: <low-cost-research-model>
+architect runners: <model-a>, <model-b>
+interrogate reviewers: <model-a>, <model-b>
 ```
 
 ### 6. Confirm

@@ -1,0 +1,28 @@
+// Copy the agent entries into your OpenCode config after choosing models.
+// Replace every <...> value with a provider/model slug OpenCode lists for you.
+// Do not install this file as-is. It is JSONC documentation, not valid config.
+{
+  "agent": {
+    "poteto-research": {
+      "model": "<low-cost-research-model>"
+    },
+    "poteto-worker": {
+      "model": "<best-price-performance-coding-model>"
+    },
+    "poteto-expert": {
+      "model": "<strongest-reasoning-model>"
+    },
+    "ci-watcher": {
+      "model": "<low-cost-research-model>"
+    },
+    "comment-sicko": {
+      "model": "<low-cost-research-model>"
+    },
+    "thermo-nuclear-review-subagent": {
+      "model": "<best-price-performance-coding-model>"
+    },
+    "thermo-nuclear-code-quality-review-subagent": {
+      "model": "<best-price-performance-coding-model>"
+    }
+  }
+}
