@@ -22,17 +22,9 @@ Skip when the conversation is trivial, off-topic, or already covered by an exist
 
 ### 1. Locate the active transcript
 
-Where the active transcript lives depends on the host. On Claude Code, the parent finds its own transcript file at `~/.claude/projects/<slug>/<session-id>.jsonl` (or under `$CLAUDE_CONFIG_DIR` if set), where `<slug>` is the working directory path with every non-alphanumeric character turned into "-". Do not glob across other projects' directories under `~/.claude/projects/`. That crosses workspace boundaries and reads private chats from unrelated projects.
+OpenCode stores transcripts in its session database rather than plain files. Enumerate sessions for the current project with `opencode session list --format json`, match the candidate whose first message is this conversation's opening prompt, then read it with `opencode export <sessionID>`. Do not read sessions from unrelated projects.
 
-```bash
-ls -t ~/.claude/projects/<slug>/*.jsonl 2>/dev/null | head -10
-```
-
-For each candidate, read the first JSONL line and check that `message.content[0].text` contains the conversation's opening user prompt. Take the matching path.
-
-On OpenCode, transcripts live in its session database rather than plain files. Enumerate with `opencode session list --format json` scoped to the current project, then match the candidate whose first message is this conversation's opening prompt, and pull its content with `opencode export <sessionID>`.
-
-If neither convention resolves (including a host with no exposed transcript mechanism at all), write a tight digest of the session and pass that instead — asking the user directly for what happened rather than inventing a transcript location.
+If either command is unavailable, write a tight digest of the session and pass that instead. Ask the user for what happened rather than inventing a transcript location.
 
 ### 2. Spawn three reviewers in parallel
 
@@ -72,7 +64,7 @@ For each approved Accepted item, follow the Routing field exactly:
 - Frontmatter: YAML between `---` markers with two required fields — `name` (lowercase, hyphenated, must match the skill's directory name) and `description` (the single most important field, since it drives auto-invocation: make it specific enough that an agent can tell exactly when to invoke the skill versus when not to, naming concrete triggers rather than a vague summary of what the skill does).
 - Frontmatter formatting: keep `description` as one YAML scalar. If it contains a colon, quotes, or other punctuation that breaks plain YAML, or needs to wrap across lines, quote it or use `description: >-` with indented continuation lines — never let it spill into invalid multi-line YAML.
 - Body: clear step-by-step instructions written as agent-facing prose — imperative, precise, no filler. Agent-facing prose has a higher bar than human prose, because an unhelpful sentence becomes an instruction some future agent follows. Cut hedging, cut restatement, cut anything that doesn't change what the reader does next.
-- Where to save it: for Claude Code, `.claude/skills/<name>/SKILL.md` (project) or `~/.claude/skills/<name>/SKILL.md` (personal); for OpenCode, `.opencode/skills/<name>/SKILL.md` (project) or `~/.config/opencode/skills/<name>/SKILL.md` (personal). Pick project vs. personal based on whether the learning is specific to this repo or general to the user's workflow; pick the host based on which one the parent is running under.
+- Where to save it: use `.opencode/skills/<name>/SKILL.md` for project-specific learning and `~/.config/opencode/skills/<name>/SKILL.md` for general workflow learning.
 
 If your environment ships a SKILL.md validator, run it on every touched skill before declaring done. Skip this step if it doesn't.
 

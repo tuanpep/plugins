@@ -121,6 +121,16 @@ if (-not (Test-Path -LiteralPath (Join-Path $workflowRoot 'opencode.json.templat
     }
 }
 
+$documentationCheck = Join-Path $PSScriptRoot 'check-opencode-docs.ps1'
+if (-not (Test-Path -LiteralPath $documentationCheck -PathType Leaf)) {
+    $errors.Add('scripts is missing check-opencode-docs.ps1')
+} else {
+    & $documentationCheck -RepositoryRoot $repositoryRoot
+    if (-not $?) {
+        $errors.Add('OpenCode documentation check failed')
+    }
+}
+
 if ($errors.Count -gt 0) {
     $errors | ForEach-Object { Write-Error $_ }
     exit 1

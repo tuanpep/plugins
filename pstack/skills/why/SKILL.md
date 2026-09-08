@@ -97,7 +97,7 @@ Capture this as seed context (file paths, symbols, commits, PR numbers, linked t
 
 ### Discovery
 
-Before spawning investigators, list the available MCPs from the host environment. Use the available-tools map when present. On Claude Code, otherwise run `claude mcp list` for configured MCP servers.
+Before spawning investigators, list the available MCPs from the OpenCode available-tools map. If the map is unavailable, use only the tools and MCPs exposed to this session. Do not guess configured servers from another host's CLI.
 
 Map each available MCP to one evidence category:
 

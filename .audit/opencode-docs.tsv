@@ -1,0 +1,6 @@
+ts	phase	decision	why	evidence	result
+2026-09-08T00:00:00Z	frame	made OpenCode the only supported documentation path	the requested end state is an OpenCode-only repository experience	README.md and scripts/install-opencode.ps1	open
+2026-09-08T00:10:00Z	design	kept legacy host assets out of scope	the installation scripts and metadata may remain for compatibility without appearing in user documentation	README.md provenance section	open
+2026-09-08T00:20:00Z	verification	added a repeatable documentation check	future edits need a direct guard against restoring removed host instructions	scripts/check-opencode-docs.ps1	passed
+2026-09-08T00:30:00Z	frame	completed the OpenCode-only migration for installed and public documentation	the supported reader path now uses OpenCode commands and locations only	README.md, pstack/skills, opencode-workflow/opencode	verified
+2026-09-08T00:40:00Z	verification	confirmed the scoped documentation check and asset verification pass	the documentation check covers 144 public and installed OpenCode Markdown files, while excluded legacy assets remain outside the supported path	scripts/check-opencode-docs.ps1 and scripts/verify-opencode.ps1	passed

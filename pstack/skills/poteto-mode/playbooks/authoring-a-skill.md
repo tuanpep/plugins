@@ -5,7 +5,7 @@
 1. Write the SKILL.md:
    - YAML frontmatter between `---` markers with `name` (lowercase, hyphenated, matches the directory name) and `description` (specific enough that an agent can tell when to invoke it — this is the single most important field, since it drives auto-invocation). Keep `description` as one YAML scalar: quote it, or use `description: >-` with indented continuation lines, whenever punctuation or line wrapping would otherwise break it.
    - Body: step-by-step instructions written as agent-facing prose — imperative, precise, no filler. Same bar as the rest of this playbook: an unhelpful sentence becomes an instruction some future agent follows.
-   - Save it to `.claude/skills/<name>/SKILL.md` (project) or `~/.claude/skills/<name>/SKILL.md` (personal) for Claude Code; `.opencode/skills/<name>/SKILL.md` or `~/.config/opencode/skills/<name>/SKILL.md` for OpenCode.
+   - Save a project skill to `.opencode/skills/<name>/SKILL.md`. Save a personal skill to `~/.config/opencode/skills/<name>/SKILL.md`.
 2. Validate the skill: frontmatter has `name` and `description`, referenced files exist, cross-skill links resolve.
 3. Test cases if structural; skip if subjective.
 4. Run **Opening a PR**.

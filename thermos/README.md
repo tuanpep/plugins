@@ -1,81 +1,38 @@
-# Thermos plugin
+# thermos for OpenCode
 
-Thermo-nuclear branch review: deep correctness and security audits, harsh maintainability rubrics, and parallel subagent orchestration.
+`thermos` runs deep branch reviews for correctness, security, and maintainability through parallel OpenCode subagents.
 
 ## Install
 
-From the [repository root](../README.md#quick-install-all-plugins):
+From the [repository root](../README.md#install-opencode-plugins), run one command:
 
-| OS | Claude Code | OpenCode |
-|----|-------------|----------|
-| Windows (PowerShell) | `pwsh -File ./scripts/install-claude.ps1 -Plugin thermos` | `pwsh -File ./scripts/install-opencode.ps1 -Plugin thermos` |
-| Windows (Git Bash) | `bash ./scripts/install-claude.sh --plugin thermos` | `bash ./scripts/install-opencode.sh --plugin thermos` |
-| macOS / Linux | `bash ./scripts/install-claude.sh --plugin thermos` | `bash ./scripts/install-opencode.sh --plugin thermos` |
+| OS | Command |
+|----|---------|
+| Windows, PowerShell | `pwsh -File ./scripts/install-opencode.ps1 -Plugin thermos` |
+| Windows, Git Bash | `bash ./scripts/install-opencode.sh --plugin thermos` |
+| macOS or Linux | `bash ./scripts/install-opencode.sh --plugin thermos` |
 
-Restart your agent host after installing.
-
-## Architecture
-
-```mermaid
-flowchart TB
-  subgraph L2["Orchestrator"]
-    TH[thermos]
-  end
-
-  subgraph L1["Subagents"]
-    SNR[thermo-nuclear-review-subagent]
-    SNCQ[thermo-nuclear-code-quality-review-subagent]
-  end
-
-  DIFF[git diff + file contents]
-
-  subgraph L0["Skills"]
-    TNR[thermo-nuclear-review]
-    TNCQ[thermo-nuclear-code-quality-review]
-  end
-
-  TH --> SNR
-  TH --> SNCQ
-  SNR --> TNR
-  SNR --> DIFF
-  SNCQ --> TNCQ
-  SNCQ --> DIFF
-```
+Restart OpenCode after installation.
 
 ## Skills
 
 | Skill | Description |
 |:------|:------------|
-| `thermo-nuclear-review` | Deep branch audit (bugs, breakages, security, devex, feature-gate leaks). |
-| `thermo-nuclear-code-quality-review` | Strict maintainability audit (code-judo, 1k-line rule, spaghetti, boundaries). |
-| `thermos` | Run both review subagents in parallel and synthesize findings. |
+| `thermo-nuclear-review` | Audit a branch for bugs, breaking changes, security issues, developer-experience regressions, and feature-gate leaks |
+| `thermo-nuclear-code-quality-review` | Audit maintainability, file size, boundaries, and condition complexity |
+| `thermos` | Run both review subagents in parallel and combine their findings |
 
 ## Agents
 
+Mention either agent after gathering the diff and full contents of changed files:
+
 | Agent | Description |
 |:------|:------------|
-| `thermo-nuclear-review-subagent` | Task subagent for deep review rubric (diff-scoped). |
-| `thermo-nuclear-code-quality-review-subagent` | Task subagent for code-quality rubric (diff-scoped). |
+| `@thermo-nuclear-review-subagent` | Diff-scoped correctness and security review |
+| `@thermo-nuclear-code-quality-review-subagent` | Diff-scoped maintainability review |
 
-## Typical usage
+For a full thermos pass, invoke both agents in parallel. Use the `thermos` skill when you want it to coordinate the two reviews and combine their findings.
 
-**Double review (thermos):**
+## License and provenance
 
-1. Gather `git diff main...HEAD` and full contents of changed files.
-2. Invoke both subagents in one message with `run_in_background: true`.
-3. Synthesize prioritized, deduped findings.
-
-**Single skill:** invoke `thermo-nuclear-review` or `thermo-nuclear-code-quality-review` in the main agent, or the matching subagent after gathering diff context.
-
-### Host agents
-
-| Host | Agents |
-|------|--------|
-| Claude Code (Task subagents) | `thermo-nuclear-review-subagent`, `thermo-nuclear-code-quality-review-subagent` |
-| OpenCode (@mention) | same names |
-
-Gather diff context first, then invoke both review subagents in parallel for a full thermos pass.
-
-## License
-
-MIT. Derived from [cursor/plugins](https://github.com/cursor/plugins) — Copyright (c) 2026 Cursor.
+MIT. Derived from [cursor/plugins](https://github.com/cursor/plugins). Copyright (c) 2026 Cursor.

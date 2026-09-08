@@ -1,20 +1,18 @@
-# Cursor Team Kit plugin
+# cursor-team-kit for OpenCode
 
-Internal-style workflows for CI, code review, shipping, and test reliability. The kit is designed to be plug and play without requiring third-party service integrations.
+`cursor-team-kit` adds workflows for CI, code review, shipping, and test reliability to OpenCode. It works without third-party service integrations.
 
 ## Install
 
-From the [repository root](../README.md#quick-install-all-plugins):
+From the [repository root](../README.md#install-opencode-plugins), run one command:
 
-| OS | Claude Code | OpenCode |
-|----|-------------|----------|
-| Windows (PowerShell) | `pwsh -File ./scripts/install-claude.ps1 -Plugin cursor-team-kit` | `pwsh -File ./scripts/install-opencode.ps1 -Plugin cursor-team-kit` |
-| Windows (Git Bash) | `bash ./scripts/install-claude.sh --plugin cursor-team-kit` | `bash ./scripts/install-opencode.sh --plugin cursor-team-kit` |
-| macOS / Linux | `bash ./scripts/install-claude.sh --plugin cursor-team-kit` | `bash ./scripts/install-opencode.sh --plugin cursor-team-kit` |
+| OS | Command |
+|----|---------|
+| Windows, PowerShell | `pwsh -File ./scripts/install-opencode.ps1 -Plugin cursor-team-kit` |
+| Windows, Git Bash | `bash ./scripts/install-opencode.sh --plugin cursor-team-kit` |
+| macOS or Linux | `bash ./scripts/install-opencode.sh --plugin cursor-team-kit` |
 
-Project-local OpenCode install: add `-Scope Project` (PowerShell) or `--scope project` (Bash).
-
-Restart your agent host after installing.
+For a project install, add `-Scope Project` in PowerShell or `--scope project` in Bash. Restart OpenCode after installation.
 
 ## Components
 
@@ -23,35 +21,29 @@ Restart your agent host after installing.
 | Skill | Description |
 |:------|:------------|
 | `loop-on-ci` | Watch CI runs and iterate on failures until checks pass |
-| `review-and-ship` | Run a structured review, commit changes, and open a PR |
-| `pr-review-canvas` | Generate an interactive HTML PR walkthrough with annotated, categorized diffs |
-| `verify-this` | Prove or disprove claims with baseline/treatment artifacts and a clear verdict |
-| `control-cli` | Build or adapt a local harness to drive and profile interactive CLIs or TUIs |
-| `control-ui` | Build or adapt a local browser/CDP harness for web or Electron UIs |
-| `make-pr-easy-to-review` | Clean noisy PR history, improve descriptions, and add reviewer guidance |
-| `run-smoke-tests` | Run Playwright smoke tests and triage failures |
+| `review-and-ship` | Review changes, commit them, and open a PR |
+| `pr-review-canvas` | Generate an HTML PR walkthrough with categorized, annotated diffs |
+| `verify-this` | Prove or disprove a claim with baseline and treatment artifacts |
+| `control-cli` | Build or adapt a local control tool for interactive CLIs or TUIs |
+| `control-ui` | Build or adapt a browser/CDP control tool for web or Electron UIs |
+| `make-pr-easy-to-review` | Clean PR history and improve reviewer guidance |
+| `run-smoke-tests` | Run Playwright smoke tests and investigate failures |
 | `fix-ci` | Find failing CI jobs, inspect logs, and apply focused fixes |
-| `new-branch-and-pr` | Create a fresh branch, complete work, and open a pull request |
-| `get-pr-comments` | Fetch and summarize review comments from the active pull request |
-| `check-compiler-errors` | Run compile and type-check commands and report failures |
-| `what-did-i-get-done` | Summarize authored commits over a given time period into a concise status update |
-| `weekly-review` | Generate a weekly recap of shipped work with bugfix/tech-debt/net-new highlights |
-| `fix-merge-conflicts` | Resolve merge conflicts, validate build/tests, and summarize decisions |
+| `new-branch-and-pr` | Create a branch, complete work, and open a PR |
+| `get-pr-comments` | Fetch and summarize active PR comments |
+| `check-compiler-errors` | Run compile and type checks and report failures |
+| `what-did-i-get-done` | Summarize authored commits for a time period |
+| `weekly-review` | Generate a weekly work summary |
+| `fix-merge-conflicts` | Resolve merge conflicts and validate the result |
 | `deslop` | Remove AI-generated code slop and clean up code style |
-| `workflow-from-chats` | Extract durable working preferences from chats into skills, rules, or docs |
+| `workflow-from-chats` | Extract durable preferences from chats into skills, rules, or docs |
 
-### Agents
+### Agent
 
-| Agent | Description |
-|:------|:------------|
-| `ci-watcher` | Monitor GitHub Actions runs and return concise pass/fail summaries |
+Mention `@ci-watcher` to monitor GitHub Actions runs and receive a concise pass or fail summary.
 
-For the strict maintainability review previously shipped here as `thermo-nuclear-code-quality-review`, install the [`thermos`](../thermos/) plugin instead — it now owns that skill and agent.
+For strict maintainability review, install [thermos](../thermos/). It owns `thermo-nuclear-code-quality-review` and its review agent.
 
-### OpenCode
+## License and provenance
 
-Mention `@ci-watcher` after install.
-
-## License
-
-MIT. Derived from [cursor/plugins](https://github.com/cursor/plugins) — Copyright (c) 2026 Cursor.
+MIT. Derived from [cursor/plugins](https://github.com/cursor/plugins). Copyright (c) 2026 Cursor.

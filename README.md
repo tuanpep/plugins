@@ -1,260 +1,81 @@
-# Agent plugins
+# OpenCode agent plugins
 
-Plugin marketplace for [Claude Code](https://code.claude.com) and [OpenCode](https://opencode.ai): CI workflows, code review, rigorous engineering skills, and deep branch audits.
-
-Adapted from the official [Cursor plugins](https://github.com/cursor/plugins) (`cursor-team-kit`, `pstack`, `thermos`). This fork adds Claude Code subagents, OpenCode primary agents, and install/verify scripts.
-
-Skills use the shared [Agent Skills](https://agentskills.io) format and work in both tools. Agent definitions are host-specific:
-
-| Host | Agent location | Role |
-|------|----------------|------|
-| Claude Code | `agents/*.md` | Subagents invoked via the Task tool |
-| OpenCode | `opencode/agent/*.md` | Primary agents (Tab) and subagents (@mention) |
+An OpenCode plugin collection for CI workflows, code review, rigorous engineering skills, and branch audits.
 
 ## Plugins
 
 | Name | Folder | What it adds |
 |------|--------|--------------|
-| `cursor-team-kit` | [cursor-team-kit/](cursor-team-kit/) | CI, shipping, PR review, verification, CLI/UI harness skills |
-| `pstack` | [pstack/](pstack/) | Poteto Mode, principles, architect/interrogate/swarm workflows |
-| `thermos` | [thermos/](thermos/) | Thermo-nuclear branch review (security + code quality) |
-| `opencode-workflow` | [opencode-workflow/](opencode-workflow/) | OpenCode host config: `code` / `review` / `rigor`, slash commands, `WORKFLOW.md`, `/compat`, `/learn` |
-
----
+| `cursor-team-kit` | [cursor-team-kit/](cursor-team-kit/) | CI, shipping, PR review, verification, and CLI/UI control skills |
+| `pstack` | [pstack/](pstack/) | Poteto Mode, engineering principles, and multi-agent workflows |
+| `thermos` | [thermos/](thermos/) | Deep branch review for correctness, security, and maintainability |
+| `opencode-workflow` | [opencode-workflow/](opencode-workflow/) | Primary agents, slash commands, `WORKFLOW.md`, `/compat`, and `/learn` |
 
 ## Prerequisites
 
-| Tool | Claude Code | OpenCode |
-|------|-------------|----------|
-| CLI | [`claude`](https://code.claude.com) | [`opencode`](https://opencode.ai) |
-| Windows | PowerShell 7+ (`pwsh`) or Git Bash | PowerShell 7+ (`pwsh`) or Git Bash |
-| macOS / Linux | Bash (default shell) | Bash (default shell) |
+- [OpenCode](https://opencode.ai)
+- PowerShell 7 or later for the PowerShell installer and verification script. On macOS or Linux, you can use the Bash installer instead.
 
-Optional on any OS: [PowerShell 7](https://learn.microsoft.com/powershell/scripting/install/installing-powershell) for `.ps1` installers and verify scripts.
+## Install OpenCode plugins
 
-On macOS/Linux, run Bash installers with `bash ./scripts/...` (or `chmod +x scripts/*.sh` first).
-
----
-
-## Clone from source
-
-### Upstream (Cursor)
-
-Official plugin source and Cursor marketplace:
-
-```bash
-git clone https://github.com/cursor/plugins.git
-cd plugins
-```
-
-Install via Cursor's plugin marketplace or copy individual plugin folders into your project. See the [upstream README](https://github.com/cursor/plugins/blob/main/README.md) for the full plugin catalog.
-
-### This fork (Claude Code + OpenCode)
+Clone the repository and run the installer from its root.
 
 ```bash
 git clone https://github.com/tuanpep/plugins.git
 cd plugins
 ```
 
-Then follow [Quick install](#quick-install-all-plugins) below.
-
----
-
-## Quick install (all plugins)
-
-Clone this fork, `cd` into it, then run **one** row for your host and OS.
-
-### Claude Code
-
 | OS | Command |
 |----|---------|
-| **Windows** (PowerShell) | `pwsh -File ./scripts/install-claude.ps1` |
-| **Windows** (Git Bash) | `bash ./scripts/install-claude.sh` |
-| **macOS / Linux** | `bash ./scripts/install-claude.sh` |
+| Windows, PowerShell | `pwsh -File ./scripts/install-opencode.ps1` |
+| Windows, Git Bash | `bash ./scripts/install-opencode.sh` |
+| macOS or Linux | `bash ./scripts/install-opencode.sh` |
 
-Manual equivalent (any OS):
+The installer adds all plugins to `~/.config/opencode/` by default. Restart OpenCode when it finishes.
+
+To install one plugin, pass its name:
 
 ```bash
-# Local clone
-claude plugin marketplace add /path/to/this/repo
-
-# GitHub
-claude plugin marketplace add tuanpep/plugins
-
-claude plugin install cursor-team-kit@agent-plugins
-claude plugin install pstack@agent-plugins
-claude plugin install thermos@agent-plugins
+pwsh -File ./scripts/install-opencode.ps1 -Plugin pstack
+bash ./scripts/install-opencode.sh --plugin thermos
 ```
 
-The marketplace id is `agent-plugins` (from `.claude-plugin/marketplace.json`).
-
-### OpenCode
-
-| OS | Command |
-|----|---------|
-| **Windows** (PowerShell) | `pwsh -File ./scripts/install-opencode.ps1` |
-| **Windows** (Git Bash) | `bash ./scripts/install-opencode.sh` |
-| **macOS / Linux** | `bash ./scripts/install-opencode.sh` |
-
-Install location:
-
-| Scope | Path |
-|-------|------|
-| Global (default) | `~/.config/opencode/` |
-| Project | `./.opencode/` in the current directory |
-
-Project scope example:
+To install into the current project's `.opencode/` directory instead:
 
 ```bash
-# PowerShell
 pwsh -File ./scripts/install-opencode.ps1 -Plugin pstack -Scope Project
-
-# Bash
 bash ./scripts/install-opencode.sh --plugin pstack --scope project
 ```
 
-**Restart the host** after installing (Claude Code or OpenCode).
+`opencode-workflow` merges `opencode.json.template` into the selected destination's `opencode.json`, installs `WORKFLOW.md`, and sets `default_agent` to `code`. The destination is `~/.config/opencode/` for a global install and `.opencode/` for a project install. It does not configure a provider, API key, or model. Configure a provider in OpenCode, copy the applicable entries from `opencode-workflow/opencode-model-routing.example.jsonc` into `opencode.json`, then run `/setup-pstack` to assign available models to pstack roles.
 
----
+## Use the installed agents
 
-## Post-install
+Use Tab to select the `code`, `review`, or `rigor` primary agent. `code` is the default. Use `@` mentions for installed subagents, including `@ci-watcher`, `@poteto-worker`, and the thermos review agents.
 
-1. **Restart** Claude Code or OpenCode.
-2. **Claude Code:** if you previously used `cursor-plugins-mirror`, disable the old copies in `~/.claude/settings.json` to avoid duplicate skill catalogs:
-   ```json
-   "cursor-team-kit@cursor-plugins-mirror": false,
-   "pstack@cursor-plugins-mirror": false
-   ```
-3. **OpenCode:** `opencode-workflow` merges `opencode.json.template` into `~/.config/opencode/opencode.json`, installs `WORKFLOW.md`, and sets `default_agent` to `code`. It does not add a provider, API key, or model. Configure your provider through OpenCode. Copy the tier entries in `opencode-workflow/opencode-model-routing.example.jsonc` into `opencode.json` with model slugs available to you, then run `/setup-pstack` for routed-skill roles.
-4. **OpenCode:** the installer removes stale `coding-agent.md` / `review-agent.md` from the destination `agents/` directory. Primaries are now `code`, `review`, and `rigor`.
+Pstack supplies hidden Task targets: `poteto-research` for bounded evidence gathering, `poteto-worker` for implementation and focused review, and `poteto-expert` for trace-backed performance work and high-risk reasoning. Run `/setup-pstack` after installation to configure their models.
 
----
+Available workflow commands include `/review`, `/rigor`, `/compat`, `/learn`, `/ship`, `/verify`, `/how`, and `/why`. See [pstack/docs/guide/](pstack/docs/guide/README.md) for a pstack walkthrough.
 
-## Install one plugin
+## Verify repository changes
 
-### Claude Code
+Run this from the repository root after editing OpenCode skills, agents, or commands:
 
 ```bash
-# Bash / macOS / Linux / Git Bash
-bash ./scripts/install-claude.sh --plugin pstack
-
-# Windows PowerShell
-pwsh -File ./scripts/install-claude.ps1 -Plugin pstack
+pwsh -File ./scripts/verify-opencode.ps1
+pwsh -File ./scripts/check-opencode-docs.ps1
 ```
 
-### OpenCode
+## Update
+
+After `git pull`, rerun the OpenCode installer and restart OpenCode:
 
 ```bash
-bash ./scripts/install-opencode.sh --plugin thermos
-pwsh -File ./scripts/install-opencode.ps1 -Plugin thermos
+pwsh -File ./scripts/install-opencode.ps1
 ```
 
----
+## Copyright and provenance
 
-## Verify before you ship changes
+`cursor-team-kit` and `thermos` are derived from [Cursor plugins](https://github.com/cursor/plugins). `pstack` is derived from work by Lauren Tan. See each plugin's `LICENSE` file.
 
-Run from the repository root after editing skills or agents.
-
-| OS | Claude Code | OpenCode |
-|----|-------------|----------|
-| **Windows** | `pwsh -File ./scripts/verify-claude.ps1` | `pwsh -File ./scripts/verify-opencode.ps1` |
-| **macOS / Linux / Git Bash** | `bash ./scripts/verify-claude.sh` | `bash ./scripts/verify-opencode.sh` |
-
-Bash verify scripts delegate to PowerShell 7 when available.
-
-Verification checks skill frontmatter, required agent files, and naming conventions. OpenCode pstack agents use tiered hidden Task targets: `poteto-research` for evidence gathering, `poteto-worker` for implementation, and `poteto-expert` for high-risk work. Configure their actual models with `/setup-pstack` after installation. `poteto-mode`, `poteto-agent`, and `comment-sicko` remain available. Primaries `code` / `review` / `rigor` live in `opencode-workflow`. Claude Code still uses `coding-agent` / `review-agent` / `poteto-mode` / `poteto-agent` / `comment-sicko`. Claude agent `comment-sicko` uses `name: Comment Sicko` (not kebab-case) by design.
-
----
-
-## Agents at a glance
-
-### pstack (Claude Code — Task subagents)
-
-| Subagent | Use for |
-|----------|---------|
-| `coding-agent` | Default coding delegate |
-| `poteto-mode` | Full Poteto Mode workflow |
-| `review-agent` | Read-only review |
-| `poteto-agent` | Legacy alias for `poteto-mode` |
-| `comment-sicko` | Comment cleanup (`Comment Sicko`) |
-
-### OpenCode — Tab primaries (`opencode-workflow`)
-
-| Agent | Use for |
-|-------|---------|
-| `code` | Light implement/debug. Default. |
-| `review` | Read-only review. No file edits. |
-| `rigor` | Heavy pstack playbooks and verification. |
-
-Hidden Task targets from pstack: `@poteto-research` for evidence gathering, `@poteto-worker` for implementation, and `@poteto-expert` for high-risk work. Run `/setup-pstack` after installation to map work types to available models. `@poteto-mode` and `@poteto-agent` remain compatibility targets. Other subagents: `@comment-sicko`, `@ci-watcher`, thermo review subagents. Commands: `/review`, `/rigor`, `/compat`, `/learn`, `/ship`, `/verify`, `/how`, `/why`.
-
-### thermos + cursor-team-kit
-
-| Host | Agents |
-|------|--------|
-| Claude Code | `thermo-nuclear-review-subagent`, `thermo-nuclear-code-quality-review-subagent`, `ci-watcher` |
-| OpenCode | Same names as `@`-mention subagents |
-
-See each plugin's README for skill lists and usage. For a guided pstack walkthrough, see [pstack/docs/guide/](pstack/docs/guide/README.md).
-
----
-
-## Try without installing (Claude Code)
-
-```bash
-claude --plugin-dir ./pstack
-claude --plugin-dir ./thermos
-```
-
----
-
-## Update after `git pull`
-
-Re-run the installer for your host. Both installers are idempotent.
-
-```bash
-bash ./scripts/install-claude.sh
-bash ./scripts/install-opencode.sh
-```
-
-Then restart Claude Code / OpenCode.
-
----
-
-## Repository layout
-
-```
-.
-├── .claude-plugin/marketplace.json   # Claude Code marketplace manifest
-├── scripts/
-│   ├── install-claude.ps1 / .sh
-│   ├── install-opencode.ps1 / .sh
-│   ├── merge-opencode-json.py
-│   ├── verify-claude.ps1
-│   └── verify-opencode.ps1
-└── <plugin>/
-    ├── .claude-plugin/plugin.json
-    ├── skills/                       # shared skills (both hosts)
-    ├── agents/                       # Claude Code subagents
-    └── opencode/
-        ├── agent/                    # OpenCode agents
-        └── command/                  # OpenCode slash commands (optional)
-```
-
----
-
-## Copyright
-
-| Component | Copyright holder | License |
-|-----------|------------------|---------|
-| `cursor-team-kit`, `thermos` | [Cursor](https://cursor.com) | MIT — see plugin `LICENSE` |
-| `pstack` | Lauren Tan | MIT — see [pstack/LICENSE](pstack/LICENSE) |
-| Install scripts, Claude/OpenCode agent adaptations, `opencode-workflow` | tuanpep | MIT — see [LICENSE](LICENSE) |
-
-Upstream source: [github.com/cursor/plugins](https://github.com/cursor/plugins)
-
----
-
-## License
-
-MIT. See [LICENSE](LICENSE) and each plugin's `LICENSE` file.
+The OpenCode adaptations, installation scripts, and `opencode-workflow` are MIT licensed by tuanpep. See [LICENSE](LICENSE).

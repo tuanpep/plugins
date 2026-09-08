@@ -19,7 +19,7 @@ Scan for:
 
 Findings must point to skills, tools, or MCPs invoked in this transcript. Speculative routings to skills the parent never opened do not count. To check whether a skill was used, scan the transcript for:
 
-- `Read` tool calls against any `SKILL.md` file (workspace `.claude/skills/` or `.opencode/skills/`, user-level `~/.claude/skills/` or `~/.config/opencode/skills/`, or plugin-installed paths under `~/.claude/plugins/`)
+- `Read` tool calls against any `SKILL.md` file in `.opencode/skills/`, `~/.config/opencode/skills/`, or an installed plugin path
 - `Task` prompts that name a skill path
 - Tool calls (Shell, Grep, MCP, etc.) that match a skill's documented commands
 

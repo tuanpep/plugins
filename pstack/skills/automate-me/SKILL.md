@@ -14,7 +14,7 @@ This skill orchestrates two others plus an inline authoring step: an inline mini
 
 ### 0. Check for an existing skill
 
-Look recursively for `.claude/skills/**/*-mode/SKILL.md`, `.opencode/skills/**/*-mode/SKILL.md`, `~/.claude/skills/*-mode/SKILL.md`, and `~/.config/opencode/skills/*-mode/SKILL.md` matching the user's handle. Mode skills can live in a personal category directory (e.g. `.claude/skills/<handle>/`), not only at the top level. If one exists, confirm intent with `AskQuestion` (unless they already said "update my skill" or similar):
+Look recursively for `.opencode/skills/**/*-mode/SKILL.md` and `~/.config/opencode/skills/*-mode/SKILL.md` matching the user's handle. Mode skills can live in a personal category directory such as `.opencode/skills/<handle>/`, not only at the top level. If one exists, confirm intent with `AskQuestion` unless they already said "update my skill" or similar:
 
 - Update the existing skill (default for repeat runs)
 - Start fresh (rare; ask why before doing it)
@@ -26,9 +26,9 @@ Update mode changes the rest of the flow:
 
 ### 1. Mine their history
 
-Where transcript mining reads from depends on the host. On Claude Code, transcripts live at `~/.claude/projects/<slug>/<session-id>.jsonl` (or under `$CLAUDE_CONFIG_DIR` if set), where `<slug>` is the working directory path with every non-alphanumeric character turned into "-". On OpenCode, transcripts live in its session database — enumerate with `opencode session list --format json` scoped to the current project, then pull each candidate's content with `opencode export <sessionID>`. If neither convention is available on this host, skip straight to asking the user directly (step 2) for the patterns this step would have mined — response preferences, delegation habits, verification posture, and so on — instead of guessing at an equivalent path.
+OpenCode stores transcripts in its session database. Enumerate sessions for the current project with `opencode session list --format json`, then read each candidate with `opencode export <sessionID>`. If either command is unavailable, skip to step 2 and ask the user for the patterns this step would have mined instead of guessing at another location.
 
-Locate the active workspace's transcripts before fanning out, scoped to the current project only. Don't glob across other projects' directories under `~/.claude/projects/`, and don't scope `opencode session list` beyond the current project. That crosses workspace boundaries and reads private chats from unrelated projects.
+Locate the active workspace's transcripts before fanning out. Keep `opencode session list --format json` scoped to the current project. Do not read sessions from unrelated projects.
 
 Survey recent agent conversations within that scope for recurring patterns. Run multiple parallel subagents across slices of history (e.g. last 2-4 weeks, split into 3 slices so each has enough material). Each slice mining subagent reads transcripts from the workspace-scoped path the parent provides, looks for the signals below, and returns a short structured list of patterns it saw with evidence pointers. Default signals worth hunting:
 
@@ -74,7 +74,7 @@ Author the SKILL.md directly. A SKILL.md is YAML frontmatter between `---` marke
 
 Placement:
 
-- Path: preserve an existing mode skill's category. For a new mode, use `<handle>/<handle>-mode/SKILL.md` when the repo has an established personal category for that handle. On Claude Code, use `.claude/skills/<handle>-mode/SKILL.md` (project) or `~/.claude/skills/<handle>-mode/SKILL.md` (personal). On OpenCode, use `.opencode/skills/<handle>-mode/SKILL.md` (project) or `~/.config/opencode/skills/<handle>-mode/SKILL.md` (personal).
+- Path: preserve an existing mode skill's category. For a new mode, use `<handle>/<handle>-mode/SKILL.md` when the repo has an established personal category for that handle. Use `.opencode/skills/<handle>-mode/SKILL.md` for a project skill or `~/.config/opencode/skills/<handle>-mode/SKILL.md` for a personal skill.
 - Handle: the user's first name or chosen identifier.
 - Frontmatter `description`: trigger on their name + `/<handle>-mode` + "work in their style", not on generic keywords like "write code" or "review PR".
 - Frontmatter `disable-model-invocation: true` by default. Mode skills are heavy and opinionated; they should only apply when the user explicitly invokes them (by name or slash command), not auto-trigger on description matching. Opt out only if the user explicitly wants their mode to apply on every turn.

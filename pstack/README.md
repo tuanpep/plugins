@@ -12,21 +12,21 @@ there's a growing sense that ai writes too much slop code. i agree. i don't want
 
 fork it. improve it. make it yours. PRs are welcome! 
 
-## install
+## install for OpenCode
 
-From the [repository root](../README.md#quick-install-all-plugins):
+From the [repository root](../README.md#install-opencode-plugins):
 
-| OS | Claude Code | OpenCode |
-|----|-------------|----------|
-| Windows (PowerShell) | `pwsh -File ./scripts/install-claude.ps1 -Plugin pstack` | `pwsh -File ./scripts/install-opencode.ps1 -Plugin pstack` |
-| Windows (Git Bash) | `bash ./scripts/install-claude.sh --plugin pstack` | `bash ./scripts/install-opencode.sh --plugin pstack` |
-| macOS / Linux | `bash ./scripts/install-claude.sh --plugin pstack` | `bash ./scripts/install-opencode.sh --plugin pstack` |
+| OS | Command |
+|----|---------|
+| Windows (PowerShell) | `pwsh -File ./scripts/install-opencode.ps1 -Plugin pstack` |
+| Windows (Git Bash) | `bash ./scripts/install-opencode.sh --plugin pstack` |
+| macOS / Linux | `bash ./scripts/install-opencode.sh --plugin pstack` |
 
 Install `cursor-team-kit` alongside pstack for `/deslop`, `control-cli`, and `control-ui`.
 
 For a guided walkthrough after install, see [docs/guide/](docs/guide/README.md).
 
-Restart your agent host after installing.
+Restart OpenCode after installing. For a project install, add `-Scope Project` in PowerShell or `--scope project` in Bash.
 
 ## get started
 
@@ -100,7 +100,7 @@ the full rules and playbooks live in [`skills/poteto-mode/SKILL.md`](./skills/po
 
 [`/poteto-mode`](./skills/poteto-mode/SKILL.md) is also a sticky mode: once entered it stays on across turns, applying itself when a playbook matches or the task needs rigor and staying out of the way otherwise. opt out any time by saying so.
 
-[`/poteto-mode`](./skills/poteto-mode/SKILL.md) works extremely well with the `/loop` command Claude Code and OpenCode both ship. you can make the agent work for many hours without sacrificing rigor.
+Use [`/poteto-mode`](./skills/poteto-mode/SKILL.md) for long-running work when your OpenCode configuration provides a loop or wake mechanism. The skill keeps the task rigorous by repeatedly checking its finish condition.
 
 ## skills
 
@@ -209,18 +209,6 @@ Tab primaries `code` / `review` / `rigor` ship in [`opencode-workflow`](../openc
 
 Set `default_agent` to `code` via `opencode-workflow`'s `opencode.json.template`.
 
-### Claude Code (Task subagents)
-
-| Subagent | Use for |
-|----------|---------|
-| `coding-agent` | Default coding delegate |
-| `poteto-mode` | Full Poteto Mode workflow |
-| `review-agent` | Read-only review |
-| `poteto-agent` | Legacy alias for `poteto-mode` |
-| `comment-sicko` | Comment cleanup (`Comment Sicko`) |
-
-[`/poteto-mode`](./skills/poteto-mode/SKILL.md) and [`subagent_type: "poteto-mode"`](./agents/poteto-mode.md) route through the same wrapper. Invoke Comment Sicko through [`/no-comments`](./skills/no-comments/SKILL.md), not directly.
-
 ## principles
 
 twenty-one short skills, one principle each. `poteto-mode` indexes them inline and reads that index at task start. the standalone files are there so other skills can reference a principle by name, and so the index can point at the full rule for each.
@@ -265,7 +253,7 @@ install `cursor-team-kit` alongside pstack if you want the full set.
 
 ## why are there no planning skills?
 
-Claude Code and OpenCode both have a plan mode which works great with pstack. but personally, i don't believe in planning. the best spec is code. if you do want to make a plan, [`/poteto-mode`](./skills/poteto-mode/SKILL.md) covers it, but it's not a default. 
+OpenCode has a plan mode that works well with pstack. but personally, i don't believe in planning. the best spec is code. if you do want to make a plan, [`/poteto-mode`](./skills/poteto-mode/SKILL.md) covers it, but it's not a default.
 
 ## make it yours
 
@@ -277,13 +265,10 @@ models are configurable too. type [`/setup-pstack`](./skills/setup-pstack/SKILL.
 
 ## session history skills
 
-A handful of skills (`recall`, `reflect`, `automate-me`, `show-me-your-work`, and some `poteto-mode` playbooks) read on-disk session history when the host exposes it:
+A handful of skills (`recall`, `reflect`, `automate-me`, `show-me-your-work`, and some `poteto-mode` playbooks) read OpenCode session history with `opencode session list` and `opencode export`.
 
-- Claude Code: `~/.claude/projects/<slug>/*.jsonl`
-- OpenCode: `opencode session list` and `opencode export`
+They ask for context when session history is unavailable.
 
-They ask for context when neither source is available.
+## license and provenance
 
-## license
-
-MIT. From [cursor/plugins](https://github.com/cursor/plugins) — Copyright (c) 2026 Lauren Tan.
+MIT. Derived from [cursor/plugins](https://github.com/cursor/plugins). Copyright (c) 2026 Lauren Tan.

@@ -53,7 +53,7 @@ Commit it only when the work is ambitious enough that a reviewer needs the trail
 
 ## Audit the log against the transcript
 
-At the end of the run, before handing back, check the log told the truth. Read this run's transcript: on Claude Code, that's `~/.claude/projects/<slug>/<session-id>.jsonl` (or under `$CLAUDE_CONFIG_DIR`), the newest file for this project; on OpenCode, that's `opencode export <sessionID>` for the current session (find it via `opencode session list --format json`). Don't glob across other projects; that reads unrelated private chats. If neither convention resolves on this host, don't guess at another location; instead walk the log against your own memory of the run and ask the user to fill in anything you can't verify. Walk the log against what actually happened:
+At the end of the run, before handing back, check the log told the truth. Find the current session with `opencode session list --format json`, then read it with `opencode export <sessionID>`. Do not read sessions from unrelated projects. If either command is unavailable, walk the log against your own memory of the run and ask the user to fill in anything you cannot verify. Walk the log against what actually happened:
 
 - Every row maps to a real action. Cut invented or aspirational entries.
 - Each row's evidence resolves and shows what the row claims.
@@ -64,7 +64,7 @@ Fix the log, not the story. If the work diverged from what a row claims, the row
 
 ## Cross-model review of the trail
 
-Before handing back, you must spawn a subagent on a different model family from the one that did the work. Self-review is not a substitute; the point is fresh eyes you cannot bring yourself. The subagent reads the audit trail and the run's transcript, then flags what the user should pay attention to. Not a redo of the work, a scan for what's suboptimal or risky. Transcript access uses the same host-dependent mechanism as above; if the subagent can't find it, hand it the audit trail plus a summary of the run instead and have it review from that.
+Before handing back, you must spawn a subagent on a different model family from the one that did the work. Self-review is not a substitute; the point is fresh eyes you cannot bring yourself. The subagent reads the audit trail and the run's transcript, then flags what the user should pay attention to. Not a redo of the work, a scan for what's suboptimal or risky. Give it the export obtained above. If that export is unavailable, give it the audit trail and a summary of the run instead.
 
 - Decisions logged with weak or absent evidence.
 - Verification steps skipped or claimed without proof in the transcript.
