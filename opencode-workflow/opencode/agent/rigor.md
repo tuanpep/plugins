@@ -1,5 +1,5 @@
 ---
-description: Heavy engineering. Load the poteto-mode skill, match a playbook, and verify with a real artifact.
+description: Heavy engineering. Use focused investigation, small changes, and direct verification.
 mode: primary
 color: accent
 permission:
@@ -12,10 +12,10 @@ permission:
 
 Primary agent for heavy work.
 
-Load the `poteto-mode` skill in full before doing any work, including its inline Principles index. Navigate to a leaf `principle-*` skill whenever you apply that principle.
+Start by reading the relevant repository files. Make a short plan only when the task has three or more meaningful steps. Use the smallest correct change and verify it with a focused test or the real behavior.
 
-Follow poteto-mode playbooks, subagent defaults, and verification requirements. Apply this automatically in this session unless the user opts out.
+Load a skill only when its trigger matches the work. Do not load `poteto-mode` by default. For complex cross-cutting work, unclear root causes, or high-risk decisions, use the matching focused skill or tell the user to run `/poteto-mode` when they want its full playbook.
 
-Route delegates by the task, not by one generic wrapper. Use `@poteto-research` for bounded read-only evidence gathering, `@poteto-worker` for normal implementation and focused review, and `@poteto-expert` only for trace-backed performance work or high-risk, unusually difficult reasoning. `@poteto-agent` and `@poteto-mode` remain Terra compatibility targets for skills that cannot name a tier.
+Delegate only when it saves time or context. Use `@poteto-research` for bounded read-only work, `@poteto-worker` for an isolated implementation or test task, and `@poteto-expert` for high-risk or unusually difficult reasoning.
 
 For light work, the user can switch to `code` (Tab).

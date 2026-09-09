@@ -3,6 +3,14 @@
   "default_agent": "code",
   "permission": "allow",
   "instructions": ["WORKFLOW.md"],
+  "tool_output": {
+    "max_lines": 200,
+    "max_bytes": 16384
+  },
+  "compaction": {
+    "auto": true,
+    "tail_turns": 10
+  },
   "agent": {
     "build": {
       "disable": true

@@ -9,7 +9,7 @@ Skills are portable. Agents, commands, and `opencode.json.template` are OpenCode
 | Path | Role |
 |------|------|
 | `WORKFLOW.md` | Global session instructions (does not replace project `AGENTS.md`) |
-| `opencode.json.template` | Merged into `opencode.json`. It does not select a provider, API key, or model |
+| `opencode.json.template` | Merged into `opencode.json`. It configures the workflow defaults, tool-output limits, and compaction, but does not select a provider, API key, or model |
 | `opencode-model-routing.example.jsonc` | Copyable per-agent routing example with placeholders. It is documentation and is not installed |
 | `opencode/agent/*.md` | Primaries `code` / `review` / `rigor` plus `/compat` and `/learn` subagents |
 | `opencode/command/*.md` | Slash commands (`/review`, `/rigor`, `/compat`, `/learn`, …) |

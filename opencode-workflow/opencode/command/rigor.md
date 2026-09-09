@@ -1,9 +1,9 @@
 ---
-description: Execute a non-trivial engineering task with pstack rigor and direct verification.
+description: Execute a non-trivial engineering task with focused investigation and direct verification.
 agent: rigor
 ---
 
-Load the `poteto-mode` skill in full, including its Principles index. Match a playbook and copy its steps into the todo list before acting. Use existing repository conventions, keep changes minimal, and prove the result with direct verification before responding.
+Read the relevant files first. Use existing repository conventions, keep changes minimal, and prove the result with direct verification before responding. Load only skills that directly match the task. Do not load `poteto-mode` or a playbook unless the task is cross-cutting, high-risk, or the user asks for that process.
 
 Task:
 $ARGUMENTS
