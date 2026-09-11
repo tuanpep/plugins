@@ -15,8 +15,8 @@ Reviewing changes before shipping. Close key issues, verify behavior, and open o
 2. Run targeted tests for changed behavior. If no focused tests exist, decide whether to add them or document the gap.
 3. Review for correctness, regressions, security, and intent fit. Use parallel subagents for larger diffs.
 4. Fix critical issues before finalizing and re-run affected tests.
-5. Commit selective files with a concise message.
-6. Push branch and open or update a PR.
+5. If the user explicitly asked for a commit, commit only the intended files with a concise message.
+6. If the user explicitly asked to push or open or update a PR, perform only those requested actions.
 
 ## Suggested Checks
 
@@ -38,4 +38,4 @@ gh pr checks --json name,bucket,state,workflow,link
 
 - Findings summary (critical, warning, note)
 - Tests run and outcomes
-- PR URL
+- Commit or PR result, including the PR URL when a PR was opened or updated

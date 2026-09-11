@@ -18,7 +18,7 @@ Three primaries. Cycle them with Tab.
 
 1. **Understand.** Read the relevant files. `/how` for runtime behavior. `/why` for design rationale. `@explore` for local search. `@scout` for upstream docs. `/compat` on a first visit to a repo, or after `AGENTS.md` edits.
 2. **Implement.** Small and routine: stay on `code`. Non-trivial: Tab to `rigor` or run `/rigor`.
-3. **Verify.** Start with the narrowest meaningful check; broaden when repository guidance or change scope requires it. Report blocked or partial verification honestly.
+3. **Verify.** Start with the narrowest meaningful check; broaden when repository guidance or change scope requires it. Separate setup or environment failures from product failures, and report blocked or partial verification honestly.
 4. **Review.** `/review` before merge. `/thermos` for a harsh audit.
 5. **Ship.** `/ship` only when the user asked to commit or open a PR.
 6. **Learn.** `/learn` after a session that taught a durable repo fact or preference. Writes `AGENTS.md` learned sections. Does not commit.

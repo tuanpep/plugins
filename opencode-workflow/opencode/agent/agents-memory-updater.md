@@ -13,7 +13,7 @@ Own the full memory update flow for `/learn`.
 
 ## Transcripts
 
-OpenCode stores sessions in its database, not transcript files. Use only the OpenCode session commands below.
+OpenCode stores sessions in its database, not external transcript folders. Use only the OpenCode session commands below.
 
 1. List recent sessions: `opencode session list --format json -n 40`.
 2. Inspect the JSON. Filter to the current worktree using whatever fields exist (`directory`, `path`, `cwd`, `project`, `title`). Drop sessions from other repos.

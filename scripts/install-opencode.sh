@@ -54,6 +54,14 @@ while [[ $# -gt 0 ]]; do
   esac
 done
 
+case "$scope" in
+  global|project) ;;
+  *)
+    echo "Invalid scope: $scope. Expected global or project." >&2
+    exit 1
+    ;;
+esac
+
 if [[ ${#plugins[@]} -eq 0 ]]; then
   plugins=(cursor-team-kit pstack thermos opencode-workflow)
 fi

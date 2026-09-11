@@ -1,5 +1,5 @@
 ---
-description: Alias of /rigor. Heavy pstack playbook execution.
+description: Explicit full-playbook mode for high-risk or process-intensive work.
 agent: rigor
 ---
 
