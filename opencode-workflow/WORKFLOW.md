@@ -10,15 +10,15 @@ Three primaries. Cycle them with Tab.
 |---|---|
 | `code` | Light. Small implement/debug. Default. |
 | `review` | Read-only review. No file edits. |
-| `rigor` | Heavy. pstack playbooks and verification. |
+| `rigor` | Non-trivial work. Focused investigation, minimal changes, and direct verification. |
 
 `build` and `plan` are disabled. `poteto-mode` and `poteto-agent` remain compatibility Task targets. Pstack routes new work through tiered targets.
 
 ## Daily loop
 
 1. **Understand.** Read the relevant files. `/how` for runtime behavior. `/why` for design rationale. `@explore` for local search. `@scout` for upstream docs. `/compat` on a first visit to a repo, or after `AGENTS.md` edits.
-2. **Implement.** Light: stay on `code`. Heavy: Tab to `rigor` or run `/rigor`.
-3. **Verify.** Run the repo's real check. Do not claim done from compile-only.
+2. **Implement.** Small and routine: stay on `code`. Non-trivial: Tab to `rigor` or run `/rigor`.
+3. **Verify.** Start with the narrowest meaningful check; broaden when repository guidance or change scope requires it. Report blocked or partial verification honestly.
 4. **Review.** `/review` before merge. `/thermos` for a harsh audit.
 5. **Ship.** `/ship` only when the user asked to commit or open a PR.
 6. **Learn.** `/learn` after a session that taught a durable repo fact or preference. Writes `AGENTS.md` learned sections. Does not commit.
@@ -26,7 +26,8 @@ Three primaries. Cycle them with Tab.
 ## Commands
 
 - `/review` — read-only review of the current diff
-- `/rigor` — heavy pstack playbook (`/poteto-mode` is the same command)
+- `/rigor` — non-trivial engineering with focused investigation and direct verification
+- `/poteto-mode` — full playbooks for high-risk, cross-cutting, or explicitly process-heavy work
 - `/ship` — review-and-ship (commit/PR only if asked)
 - `/thermos` — parallel thermo-nuclear review
 - `/verify` — prove a claim with baseline/treatment evidence

@@ -40,7 +40,7 @@
     },
     "rigor": {
       "mode": "primary",
-      "description": "Heavy engineering with pstack playbooks and verification."
+      "description": "Non-trivial engineering with focused investigation, minimal changes, and direct verification."
     },
     "poteto-mode": {
       "mode": "subagent",
